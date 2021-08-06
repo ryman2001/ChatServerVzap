@@ -1,0 +1,25 @@
+h1 {
+    font-family: 'Oswald';font-size: 48px;
+}
+body{
+    background: url("../images/xps-pduutGbL2-M-unsplash.jpg");
+    height: 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    
+}
+p {
+    font-family: 'Oswald';font-size: 24px;
+    color: white;
+}
+a {
+    font-family: 'Oswald';font-size: 24px;
+    color: white;
+}
+input {
+    font-family: 'Oswald';font-size: 24px;
+    margin-bottom: 20px;
+}
+.set-width {
+    width: 500px;
+}
