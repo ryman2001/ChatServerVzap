@@ -26,7 +26,7 @@
                 <input class="form-control set-width" type="password" placeholder="Confirm Password" name="passwordConfirm" required>
                 <input class="form-control set-width" type="text" placeholder="Enter your Course ID (Optional)" name="courseID">
                 <input class="form-control set-width" type="text" placeholder="Enter your Cell Phone Number(Optional)" name="cellNum">
-                <input class="form-control set-width" type="submit" value="registrationRequestCreation" name="action">
+                <input class="form-control set-width" type="submit" value="registrationRequestCreation" name="action">Register<input>
             </div>
         </form>
         <p class="text-center">Already have an Account?</p>
