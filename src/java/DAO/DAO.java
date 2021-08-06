@@ -1229,7 +1229,7 @@ public class DAO implements DAOInterface{
        Comment com = new Comment();
        if(con!=null){
            try {
-               ps = con.prepareStatement("SELECT CommentID,OwnerID,Comment,Date"+
+               ps = con.prepareStatement("SELECT CommentID,OwnerID,Comment,Date "+
                                          "FROM commenttbl WHERE PostID = ?");
                ps.setInt(1, postId);
                
