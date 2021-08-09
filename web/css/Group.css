@@ -1,0 +1,203 @@
+h1 {
+    font-family: 'Oswald';font-size: 36px; color: white;
+}
+body{
+    background-color: #41464b;
+
+}
+p {
+    font-family: 'Oswald';font-size: 24px;
+    color: #41464b;
+}
+a {
+    font-family: 'Oswald';font-size: 24px;
+    color: white;
+}
+input {
+    font-family: 'Oswald';font-size: 24px;
+    margin-bottom: 20px;
+}
+.set-width {
+    width: 400px;
+}
+.h1 {
+    font-size: 36px;
+    color: white;
+    position: absolute;
+    top: 150px;
+    left: 20px;
+}
+.h2 {
+    font-size: 36px;
+    
+    position: absolute;
+    top: 570px;
+    left: 20px;
+}
+.h3 {
+    font-size: 36px;
+    color: white;
+    position: absolute;
+    top: 150px;
+    left: 380px;
+}
+.img-height {
+    height: 720px;
+    width: 100%;
+    object-fit: cover;
+    -webkit-filter: brightness(0.8);
+    filter: brightness(0.8);
+}
+.img-height2 {
+    height: 500px;
+    width: 100%;
+    object-fit: cover;
+    margin-top: 20px;
+}
+
+.post-heading{
+    font-family: 'Oswald';font-size: 32px;
+    color: white;
+
+}
+.post-author{
+    font-family: 'Oswald';font-size: 16px;
+    color: white;
+
+}
+.post-description{
+    font-family: 'Oswald';font-size: 14px;
+    color: white;
+
+}
+.icon-size {
+    margin-top: 10px;
+    height: 100px;
+    width: 100px;
+
+}
+.friend-icon-size {
+    margin-top: 10px;
+    height: 100px;
+    width: 100px;
+
+}
+.post-black-color {
+    color: black;
+    opacity: 100%
+}
+.white-color {
+    color: white;
+}
+.black-color {
+    color: #41464b;
+}
+.add-friend-button {
+    position: absolute;
+    top: 800px;
+    left: 150px;  
+}
+.oswald{
+    font-family: 'Oswald';font-size: 24px;
+}
+.chat-list {
+    position: absolute;
+    top: 200px;
+    left: 20px;
+    width: 370px;
+    height: 220px;
+}
+.chat-box {
+    position: absolute;
+    top: 200px;
+    left: 380px;
+    width: 950px;
+    height: 440px;
+    color: white;
+    border-radius: 55px 55px 55px 55px;
+}
+.chat-bubble{
+    border-radius: 55px 55px 55px 55px;
+    margin-top: 10px;
+    margin-left: 20px;
+    margin-right: 20px;
+    background-color: rgba(255,255,255,0.6); 
+}
+.person-name {
+    margin-left: 50px;
+    margin-right: 50px;
+    color: #41464b;
+}
+.chat-message {
+    margin-left: 50px;
+    margin-right: 50px;
+    font-size: 16px;
+    color: #41464b;
+}
+.message-date-time {
+    margin-left: 50px;
+    margin-right: 50px;
+    margin-bottom: 4px;
+    font-size: 10px;
+    color: #41464b;
+}
+.user-message {
+    margin-left: 50px;
+    margin-right: 50px;
+    font-size: 16px;
+    color: #41464b;
+    position: relative;
+}
+.send-message-block {
+    border-radius: 55px 55px 55px 55px;
+    position: absolute;
+    top: 650px;
+    left: 400px;
+    width: 950px;
+    height: 100px;
+    
+}
+.message-input {
+    font-size: 16px;
+    border-radius: 55px 55px 55px 55px;
+    margin-top: 10px;
+    margin-left: 50px;
+    margin-right: 50px;
+    
+    
+}
+.send-message-button {
+    border-radius: 55px 55px 55px 55px;
+    font-size: 16px;
+    margin-top: 5px;
+}
+.friends-list {
+    position: absolute;
+    top: 470px;
+    left: 20px;
+    width: 370px;
+    height: 220px;
+}
+.friends-header {
+    font-size: 36px;
+    color: white;
+    position: absolute;
+    top: 420px;
+    left: 20px;
+}
+.flag-btn {
+    margin-left: 50px;
+    margin-right: 50px;
+    font-size: 10px;
+}
+.group-name-btn {
+    position: absolute;
+    top: 150px;
+    right: 20px;
+}
+.add-members-btn {
+    position: absolute;
+    top: 150px;
+    right: 190px;
+}
+
