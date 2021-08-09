@@ -41,12 +41,13 @@ public class PostControllerServlet extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        switch(request.getParameter("Post")){
-            case "create post":
+        switch(request.getParameter("action")){
+            case "createPost":
                 service.createPost(request, response);
                 break;
             case "addComment":
                 service.addComment(request, response);
+                break; 
             default:
                 break;      
         }
