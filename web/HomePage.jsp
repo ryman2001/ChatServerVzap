@@ -27,8 +27,8 @@
         <%user.setFriendList(dao.getFriends(user.getUserID()));%>
         <%ArrayList<Post> post = dao.getAllPosts();%>
         <%ArrayList<User> friendRequest = dao.getReceivedRequests(user.getUserID());%>
-        <%int postID = 1  ;%>
         <%SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd");%>
+        
         <nav class="navbar navbar-expand-lg navbar-light bg-light">
             <div class="container-fluid">
                 <a class="navbar-brand"><b>VZAP</b>Alumni</a>
@@ -77,24 +77,28 @@
         <h1 class="h1"><b>NOTICE</b>BOARD</h1>
         <div id="carouselExampleInterval" class="carousel slide carousel1-position" data-bs-ride="carousel">
             <div class="carousel-inner">
-                <!-- A POST ITEM -->
-                <div class="carousel-item active text-center" data-bs-interval="10000">
-                    <img src="images/postIcon5.png" class=" icon-size">
-                    <p class="post-heading"><%=post.get(0).getTitle()%><%=post.size()%></p>
-                    <p class="post-author"><%=dao.getUser(post.get(0).getOwnerID()).getName()%> <%=dao.getUser(post.get(0).getOwnerID()).getSurname()%></p>
-                    <div class="container text-center" >
-                        <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore0">Learn More</a>
+                <%if(post.size()!=0){%>
+                    <!-- A POST ITEM -->
+                    <div class="carousel-item active text-center" data-bs-interval="10000">
+                        <img src="images/postIcon5.png" class=" icon-size">
+                        <p class="post-heading"><%=post.get(0).getTitle()%><%=post.size()%></p>
+                        <p class="post-author"><%=dao.getUser(post.get(0).getOwnerID()).getName()%> <%=dao.getUser(post.get(0).getOwnerID()).getSurname()%></p>
+                        <div class="container text-center" >
+                            <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore0">Learn More</a>
+                        </div>
                     </div>
-                </div>
-                <%for(int j=1;j<post.size();j++){%>
-                <div class="carousel-item text-center" data-bs-interval="10000">
-                    <img src="images/postIcon5.png" class=" icon-size">
-                    <p class="post-heading"><%=post.get(j).getTitle()%><%=post.size()%></p>
-                    <p class="post-author"><%=dao.getUser(post.get(j).getOwnerID()).getName()%> <%=dao.getUser(post.get(j).getOwnerID()).getSurname()%></p>
-                    <div class="container text-center" >
-                        <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore<%=j%>">Learn More</a>
-                    </div>
-                </div>
+                    <%if(post.size()!=0){%>
+                        <%for(int j=1;j<post.size();j++){%>
+                        <div class="carousel-item text-center" data-bs-interval="10000">
+                            <img src="images/postIcon5.png" class=" icon-size">
+                            <p class="post-heading"><%=post.get(j).getTitle()%><%=post.size()%></p>
+                            <p class="post-author"><%=dao.getUser(post.get(j).getOwnerID()).getName()%> <%=dao.getUser(post.get(j).getOwnerID()).getSurname()%></p>
+                            <div class="container text-center" >
+                                <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore<%=j%>">Learn More</a>
+                            </div>
+                        </div>
+                        <%}%>
+                    <%}%>
                 <%}%>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleInterval" data-bs-slide="prev">
@@ -112,33 +116,27 @@
         <div id="carousel2" class="carousel slide carousel2-position" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <!-- A FRIEND -->
-                
-                <div class="carousel-item active text-center" data-bs-interval="10000">
-                    <img src="images/friendIcon3.png" class="friend-icon-size">
-                    <p class="post-heading white-color"><b><%=user.getFriendList().get(0).getSurname()%></b>NAME<%=user.getFriendList().get(0).getName()%></p>
-                    <div class="container text-center" >
-                        <a class="post-description white-color" href="" data-bs-toggle="modal" data-bs-target="#FriendDetails0">Friend Details</a>
-                    </div>
-                </div>
-                
-                <!-- A FRIEND -->
-                <%for(int i = 1; i<user.getFriendList().size();i++){%>
-                    <div class="carousel-item text-center" data-bs-interval="10000">
+                <%if(user.getFriendList().size() !=0){%>
+                    <div class="carousel-item active text-center" data-bs-interval="10000">
                         <img src="images/friendIcon3.png" class="friend-icon-size">
-                        <p class="post-heading white-color"><b><%=user.getFriendList().get(i).getSurname()%></b>NAME<%=user.getFriendList().get(i).getName()%></p>
+                        <p class="post-heading white-color"><b><%=user.getFriendList().get(0).getName()%></b><%=user.getFriendList().get(0).getSurname()%></p>
                         <div class="container text-center" >
-                            <a class="post-description white-color" href="" data-bs-toggle="modal" data-bs-target="#FriendDetails<%=i%>">Friend Details</a>
-                        </div> 
+                            <a class="post-description white-color" href="" data-bs-toggle="modal" data-bs-target="#FriendDetails0">Friend Details</a>
+                        </div>
                     </div>
+                    <%if(user.getFriendList().size() !=1){%>
+                    <!-- A FRIEND -->
+                        <%for(int i = 1; i<user.getFriendList().size();i++){%>
+                            <div class="carousel-item text-center" data-bs-interval="10000">
+                                <img src="images/friendIcon3.png" class="friend-icon-size">
+                                <p class="post-heading white-color"><b><%=user.getFriendList().get(i).getName()%></b><%=user.getFriendList().get(i).getSurname()%></p>
+                                <div class="container text-center" >
+                                    <a class="post-description white-color" href="" data-bs-toggle="modal" data-bs-target="#FriendDetails<%=i%>">Friend Details</a>
+                                </div> 
+                            </div>
+                        <%}%>
+                    <%}%>
                 <%}%>
-                <!-- A FRIEND -->
-                <div class="carousel-item text-center" data-bs-interval="10000">
-                    <img src="images/friendIcon3.png" class="friend-icon-size">
-                    <p class="post-heading white-color"><b>PERSON</b>NAME</p>
-                    <div class="container text-center" >
-                        <a class="post-description white-color" href="" data-bs-toggle="modal" data-bs-target="#FriendDetails">Friend Details</a>
-                    </div>
-                </div>
             </div>
             <button class="carousel-control-prev post-black-color" type="button" data-bs-target="#carousel2" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -155,34 +153,34 @@
         <div id="carousel3" class="carousel slide carousel3-position" data-bs-ride="carousel">
             <div class="carousel-inner">
                 <!-- A REQUEST -->
-                <%for(int i=0;i<=friendRequest.size();i++){%>
-                <div class="carousel-item active text-center" data-bs-interval="10000">
-                    <img src="images/friendRequestIcon3.png" class="friend-icon-size">
-                    <p class="post-heading white-color"><b>0PERSON</b>NAME</p>
-                    <div class="container text-center" >
-                        <button type="button" class="btn btn-outline-dark">Accept</button>
-                        <button type="button" class="btn btn-outline-dark">Decline</button>                    
+                <%if(friendRequest.size() != 0){%>
+                    <div class="carousel-item active text-center" data-bs-interval="10000">
+                        <img src="images/friendRequestIcon3.png" class="friend-icon-size">
+                        <p class="post-heading white-color"><b><%=friendRequest.get(0).getName()%></b><%=friendRequest.get(0).getSurname()%></p>
+                        <div class="container text-center" >
+                            <form action="UserServlet" method="POST">
+                                <button type="submit" name ="action" value="friendRequestAccept <%=friendRequest.get(0).getUserID()%>" class="btn btn-outline-dark">Accept</button>
+                                <button type="submit" name ="action" value="friendRequestDecline <%=friendRequest.get(0).getUserID()%>" class="btn btn-outline-dark">Decline</button>
+                                <input type="hidden" value="<%=user.getUserID()%>" name="userID">
+                            </form>                   
+                        </div>
                     </div>
-                </div>
+                    <%if(friendRequest.size() != 1){%>
+                        <%for(int i=0;i<friendRequest.size();i++){%>
+                            <div class="carousel-item  text-center" data-bs-interval="10000">
+                                <img src="images/friendRequestIcon3.png" class="friend-icon-size">
+                                <p class="post-heading white-color"><b>><%=friendRequest.get(i).getName()%></b><%=friendRequest.get(i).getSurname()%></p>
+                                <div class="container text-center" >
+                                    <form action="UserServlet" method="POST">
+                                        <button type="submit" name ="action" value="friendRequestAccept <%=friendRequest.get(i).getUserID()%>" class="btn btn-outline-dark">Accept</button>
+                                        <button type="submit" name ="action" value="friendRequestDecline <%=friendRequest.get(i).getUserID()%>" class="btn btn-outline-dark">Decline</button>
+                                        <input type="hidden" value="<%=user.getUserID()%>" name="userID">
+                                    </form>
+                                </div>
+                            </div>
+                        <%}%>
+                    <%}%>
                 <%}%>
-                <!-- A REQUEST -->
-                <div class="carousel-item text-center" data-bs-interval="10000">
-                    <img src="images/friendRequestIcon3.png" class="friend-icon-size">
-                    <p class="post-heading white-color"><b>PERSON</b>NAME</p>
-                    <div class="container text-center" >
-                        <button type="button" class="btn btn-outline-dark">Accept</button>
-                        <button type="button" class="btn btn-outline-dark">Decline</button>                    
-                    </div>
-                </div>
-                <!-- A REQUEST -->
-                <div class="carousel-item text-center" data-bs-interval="10000">
-                    <img src="images/friendRequestIcon3.png" class="friend-icon-size">
-                    <p class="post-heading white-color"><b>PERSON</b>NAME</p>
-                    <div class="container text-center" >
-                        <button type="button" class="btn btn-outline-dark">Accept</button>
-                        <button type="button" class="btn btn-outline-dark">Decline</button>
-                    </div>
-                </div>
             </div>
             <button class="carousel-control-prev post-black-color" type="button" data-bs-target="#carousel3" data-bs-slide="prev">
                 <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -205,14 +203,15 @@
                         <h5 class="modal-title oswald" id="staticBackdropLabel">Add New Friend</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <form name="addFriendForm">
-                        <input class="form-control" type="email" placeholder="Enter their Email" name="email" required>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="submit" form="addFriendForm" value="AddFriend" class="btn btn-outline-dark">Add Friend</button>
-                    </div>
+                    <form name="UserServlet" method="POST">
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="Enter their Email" name="email" required>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" value="sendFriendRequest" name="action" class="btn btn-outline-dark">Add Friend</button>
+                            <input type="hidden" value="<%=user.getUserID()%>" name="userID">
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>
@@ -327,7 +326,7 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title oswald" id="FriendDetailsLabel"><b>NAME<%=user.getFriendList().get(i).getName()%></b>SURNAME<%=user.getFriendList().get(i).getSurname()%></h5>
+                            <h5 class="modal-title oswald" id="FriendDetailsLabel"><b><%=user.getFriendList().get(i).getName()%></b><%=user.getFriendList().get(i).getSurname()%></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
@@ -335,7 +334,11 @@
                             <p class="black-color">Cell Phone Number: <%=user.getFriendList().get(i).getCellNumber()%></p>
                         </div>
                         <div class="modal-footer justify-content-center">
-                            <button type="button" class="btn btn-outline-dark">Remove Friend</button>
+                            <form action="UserServlet" method="POST">
+                                <button type="submit" name="action" value="removeFriend" class="btn btn-outline-dark">Remove Friend</button>
+                                <input type="hidden" name="userID" value="<%=user.getUserID()%>">
+                                <input type="hidden" name="friendIndex" value="<%=i%>">
+                            </form>
                         </div>
                     </div>
                 </div>
@@ -347,35 +350,44 @@
                 <div class="modal-dialog modal-dialog-centered">
                     <div class="modal-content">
                         <div class="modal-header">
-                            <h5 class="modal-title oswald" id="staticBackdropLabel"><%=dao.getPost(post.get(j).getPostID()).getTitle()%></h5>
+                            <h5 class="modal-title oswald" id="staticBackdropLabel"><%=post.get(j).getTitle()%></h5>
                             <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                         </div>
                         <div class="modal-body">
                             <div>
                                 <p class="black-color"><%=dao.getPost(post.get(j).getPostID()).getInformation()%><</p>
                             </div>
-                            <!-- ANOTHER PERSONS COMMENT -->
-                            <div class="oswald border border-dark border-3 overflow-auto post-comment-block">
-                                <div class="comment-bubble oswald border border-dark border-2">
-                                    <div class="person-name"><%=dao.getUser(dao.getPost(post.get(j).getPostID()).getOwnerID()).getName()%> <%=dao.getUser(dao.getPost(postID).getOwnerID()).getSurname()%></div>
-                                    <div class="chat-message overflow-visible"><%=dao.getPost(postID).getInformation()%></div>
-                                    <div class="message-date-time"><%=format.format(dao.getPost(postID).getUploadTime())%></div>
-                                    <button class="btn btn-outline-dark flag-btn">Flag Comment</button>
-                                </div>
-                                <!-- YOUR COMMENT -->
-                                <!--<%ArrayList<Comment> comments = dao.getCommentsForPost(postID);%>
+                            <%ArrayList<Comment> comments = dao.getCommentsForPost(post.get(j).getPostID());%>
+                            <%if(comments.size() != 0){%>
+                                <div class="oswald border border-dark border-3 overflow-auto post-comment-block">
                                 <%for(int i = 0; i <comments.size();i++){%>
-                                <div class="comment-bubble oswald border border-dark border-2">
-                                    <div class="person-name" align="right">YOUR NAME:</div>
-                                    <div class="chat-message overflow-visible" align="right">THE MESSAGE</div>
-                                    <div class="message-date-time" align="right">12 August 2021 </div>
+                                    <!-- ANOTHER PERSONS COMMENT -->
+                                    <%if(comments.get(i).getOwnerID()!= user.getUserID()){%>
+                                        <div class="comment-bubble oswald border border-dark border-2">
+                                            <div class="person-name"><%=dao.getUser(comments.get(i).getOwnerID()).getName()%> <%=dao.getUser(comments.get(i).getOwnerID()).getSurname()%></div>
+                                            <div class="chat-message overflow-visible"><%=comments.get(i).getComment()%></div>
+                                            <div class="message-date-time"><%=format.format(comments.get(i).getUploadTime())%></div>
+                                            <button class="btn btn-outline-dark flag-btn">Flag Comment</button>
+                                        </div>
+                                    <%}else{%>
+                                        <!-- YOUR COMMENT -->
+                                            <div class="comment-bubble oswald border border-dark border-2">
+                                                <div class="person-name" align="right"><%=dao.getUser(comments.get(i).getOwnerID()).getName()%> <%=dao.getUser(comments.get(i).getOwnerID()).getSurname()%></div>
+                                                <div class="chat-message overflow-visible" align="right"><%=comments.get(i).getComment()%></div>
+                                                <div class="message-date-time" align="right"><%=format.format(comments.get(i).getUploadTime())%></div>
+                                            </div> 
+                                    <%}%>
+                                <%}%>
                                 </div>
-                                <%}%>-->
-                            </div>
+                            <%}%>
                         </div>
                         <div class="modal-footer">
-                            <input type="text">
-                            <button type="submit" form="addFriendForm" value="AddFriend" class="btn btn-outline-dark">Post Comment</button>
+                            <form action="PostControllerServlet" method="POST">
+                                <input type="text" name="comment" required>
+                                <button type="sumbit"  name="action" value="addComment" class="btn btn-outline-dark">Post Comment</button>
+                                <input type="hidden" name="userID" value="<%=user.getUserID()%>">
+                                <input type="hidden" name="postID" value="<%=post.get(j).getPostID()%>">
+                            </form>
                         </div>
                     </div>
                 </div>
