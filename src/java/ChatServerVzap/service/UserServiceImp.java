@@ -226,9 +226,9 @@ public class UserServiceImp  implements UserServiceInterface
 
     @Override
     public void sendFriendRequest(HttpServletRequest request, HttpServletResponse response) {
-        if(dao.getUser(Integer.parseInt(request.getParameter("userID"))) != null && dao.getUser(Integer.parseInt(request.getParameter("friendID"))) != null)
+        if(dao.getUser(Integer.parseInt(request.getParameter("userID"))).getName() != null )
         {
-            if(dao.sendFriendRequest(Integer.parseInt(request.getParameter("userID")),Integer.parseInt(request.getParameter("friendID"))))
+            if(dao.sendFriendRequest(Integer.parseInt(request.getParameter("userID")),(request.getParameter("email"))))
             {
                 request.setAttribute("Successful", "Successful");
             }
@@ -241,48 +241,9 @@ public class UserServiceImp  implements UserServiceInterface
         {
             request.setAttribute("Successful", "failed");  
         }
+        request.setAttribute("user", dao.getUser(Integer.parseInt(request.getParameter("userID"))));  
         try {
-            request.getRequestDispatcher("homepage.jsp").forward(request, response);
-        } catch (ServletException ex) {
-            Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (IOException ex) {
-            Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
-
-    @Override
-    public void friendRequestResponse(HttpServletRequest request, HttpServletResponse response) {
-        if(dao.getUser(Integer.parseInt(request.getParameter("friendID"))) != null)
-        {
-            if(Boolean.getBoolean(request.getParameter("isAccept")))
-            {
-                if(dao.acceptFriendRequest(Integer.parseInt(request.getParameter("userID")),Integer.parseInt(request.getParameter("friendID"))))
-                {
-                    request.setAttribute("Successful", "Successful");
-                }
-                else
-                {
-                    request.setAttribute("Successful", "failed");
-                }
-            }
-            else
-            {
-                if(dao.denyFriendRequest(Integer.parseInt(request.getParameter("userID")),Integer.parseInt(request.getParameter("friendID"))))
-                {
-                    request.setAttribute("Successful", "Successful");
-                }
-                else
-                {
-                    request.setAttribute("Successful", "failed");
-                }
-            }
-        }
-        else
-        {
-            request.setAttribute("Successful", "failed");  
-        }
-        try {
-            request.getRequestDispatcher("homepage.jsp").forward(request, response);
+            request.getRequestDispatcher("HomePage.jsp").forward(request, response);
         } catch (ServletException ex) {
             Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -328,6 +289,65 @@ public class UserServiceImp  implements UserServiceInterface
             Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
             Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void removeFriend(HttpServletRequest request, HttpServletResponse response) {
+        dao.removeFriend(Integer.parseInt(request.getParameter("userID")), dao.getFriends(Integer.parseInt(request.getParameter("userID"))).get(Integer.parseInt(request.getParameter("friendIndex"))).getUserID());
+        request.setAttribute("user", dao.getUser(Integer.parseInt(request.getParameter("userID"))));
+        try {
+            request.getRequestDispatcher("HomePage.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    @Override
+    public void friendRequestAccept(HttpServletRequest request, HttpServletResponse response) {
+        if(dao.getUser(Integer.parseInt((String)request.getAttribute("friendID"))).getName() != null)
+        {
+            if(dao.acceptFriendRequest(Integer.parseInt((String)request.getAttribute("friendID")),Integer.parseInt(request.getParameter("userID"))))
+            {
+                request.setAttribute("Successful", "Successful");
+            }
+            else
+            {
+                request.setAttribute("Successful", "failed");
+            }
+            request.setAttribute("user", dao.getUser(Integer.parseInt(request.getParameter("userID"))));  
+            try {
+                request.getRequestDispatcher("HomePage.jsp").forward(request, response);
+            } catch (ServletException ex) {
+                Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
+    @Override
+    public void friendRequestDecline(HttpServletRequest request, HttpServletResponse response) {
+        if(dao.getUser(Integer.parseInt((String)request.getAttribute("friendID"))).getName() != null)
+        {
+            if(dao.denyFriendRequest(Integer.parseInt((String)request.getAttribute("friendID")),Integer.parseInt(request.getParameter("userID"))))
+            {
+                request.setAttribute("Successful", "Successful");
+            }
+            else
+            {
+                request.setAttribute("Successful", "failed");
+            }
+            request.setAttribute("user", dao.getUser(Integer.parseInt(request.getParameter("userID"))));  
+            try {
+                request.getRequestDispatcher("HomePage.jsp").forward(request, response);
+            } catch (ServletException ex) {
+                Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+            } catch (IOException ex) {
+                Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     

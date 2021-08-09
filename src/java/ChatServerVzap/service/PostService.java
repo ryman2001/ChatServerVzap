@@ -88,19 +88,20 @@ public class PostService implements IPostService {
     @Override
     public void addComment(HttpServletRequest request, HttpServletResponse response) {
       
-        try {
-            SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd");//converting a date to string                
-            boolean added = dao.createComment(new Comment(Integer.parseInt(request.getParameter("commentID")), Integer.parseInt(request.getParameter("ownerID")), request.getParameter("comment"), format.parse(request.getParameter("uploadTime"))));
+        try {             
+            boolean added = dao.createComment(new Comment( Integer.parseInt(request.getParameter("userID")),Integer.parseInt(request.getParameter("postID")), request.getParameter("comment")));
             String commentResponse = "failed to add comment";
             if(added){
                 commentResponse = "succesfully commented";
             }
              request.setAttribute("commentResponse", commentResponse);
-        } catch (ParseException ex) {
-            System.out.println(ex.getMessage());
+             request.setAttribute("user", dao.getUser(Integer.parseInt(request.getParameter("userID"))));
+             request.getRequestDispatcher("HomePage.jsp").forward(request, response);
+        } catch (ServletException ex) {
+            Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (IOException ex) {
+            Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
-
     }
 
     @Override

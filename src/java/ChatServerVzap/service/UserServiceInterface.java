@@ -14,6 +14,8 @@ public interface UserServiceInterface
     void restoreUser(HttpServletRequest request,HttpServletResponse response);
     void getFriendsList(HttpServletRequest request,HttpServletResponse response);
     void sendFriendRequest(HttpServletRequest request,HttpServletResponse response);
-    void friendRequestResponse(HttpServletRequest request,HttpServletResponse response);
     void updateUser(HttpServletRequest request,HttpServletResponse response);
+    void removeFriend(HttpServletRequest request,HttpServletResponse response);
+    void friendRequestAccept(HttpServletRequest request,HttpServletResponse response);
+    void friendRequestDecline(HttpServletRequest request,HttpServletResponse response);
 }
