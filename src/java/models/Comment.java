@@ -37,6 +37,12 @@ public class Comment {
         this.uploadTime = uploadTime;
     }
 
+    public Comment(int ownerID, int postID, String comment) {
+        this.ownerID = ownerID;
+        this.postID = postID;
+        this.comment = comment;
+    }
+    
     public int getPostID() {
         return postID;
     }
