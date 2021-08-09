@@ -360,6 +360,37 @@ public class DAO implements DAOInterface{
         return user;
     }
     
+    @Override 
+    public User getUser(String email){
+        User user = new User();
+        if(con!=null){
+             try {
+                ps = con.prepareStatement("SELECT UserID,Name,Surname,ContactNumber,CourseNumber FROM usertbl WHERE Email = ?");
+                ps.setString(1,email);
+                
+                rs = ps.executeQuery();
+                while(rs.next()){
+                    user.setUserID(rs.getInt("UserID"));
+                    user.setName(rs.getString("Name"));
+                    user.setSurname(rs.getString("Surname"));
+                    user.setCellNumber(rs.getInt("ContactNumber"));
+                    user.setCourseID(rs.getString("CourseNumber"));
+                    user.setEmail(email);
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    ps.close();
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return user;
+    }
+    
   //GROUPS
     
     @Override
@@ -651,6 +682,38 @@ public class DAO implements DAOInterface{
     }
     
     @Override
+    public boolean sendFriendRequest(int senderID, String recipientEmail){
+        int rowsAffected = 0;
+        if(con!=null){
+            try {
+                ps  = con.prepareStatement("SELECT UserID FROM usertbl WHERE Email = ?");
+                ps.setString(1,recipientEmail);
+                rs = ps.executeQuery();
+                
+                rs.next();
+                
+                ps2 = con.prepareStatement("INSERT INTO friendrequesttbl(senderID,recipientID) VALUES(?,?)");
+                ps2.setInt(1,senderID);
+                ps2.setInt(2,rs.getInt("UserID"));
+            
+                rowsAffected = ps2.executeUpdate();
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    ps.close();
+                    ps2.close();
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return rowsAffected ==1;
+    }
+    
+    @Override
     public boolean acceptFriendRequest(int senderID,int recipientID){
         int rowsAffected = 0;
         if(con!=null){
@@ -660,28 +723,29 @@ public class DAO implements DAOInterface{
                 ps.setInt(1, senderID);
                 ps.setInt(2, recipientID);
                 
-                ps2 = con.prepareStatement("INSERT INTO friendstbl(UserID,FriendID) VALUES(??)");
+                ps2 = con.prepareStatement("INSERT INTO friendstbl(UserID,FriendID) VALUES(?,?)");
                 ps2.setInt(1, senderID);
                 ps2.setInt(2,recipientID);
+
                 
-                ps3 = con.prepareStatement("INSERT INTO friendstbl(UserID,FriendID) VALUES(??)");
-                ps3.setInt(1, recipientID);
-                ps3.setInt(2,senderID);
-                
-                rowsAffected = ps.executeUpdate() + ps2.executeUpdate() +ps3.executeUpdate();
+                rowsAffected = ps.executeUpdate();
+                rowsAffected += + ps2.executeUpdate();
             } catch (SQLException ex) {
                 Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
             }finally{
                 try {
-                    ps.close();
-                    ps2.close();
-                    ps3.close();
+                    if(ps != null)
+                        ps.close();
+                    if(ps2 != null)
+                        ps2.close();
+                    if(ps3 != null)
+                        ps3.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
                 }
             }
         }
-        return rowsAffected == 3;
+        return rowsAffected == 2;
     }
     
     @Override
@@ -714,8 +778,9 @@ public class DAO implements DAOInterface{
         User sender = new User();
         if(con!=null){
             try {
-                ps = con.prepareStatement("SELECT* FROM friendrequesttbl WHERE RecipientID = ?");
+                ps = con.prepareStatement("SELECT* FROM friendrequesttbl WHERE RecipientID = ? AND accepted = ?");
                 ps.setInt(1, userId);
+                ps.setString(2, "N");
                 rs = ps.executeQuery();
                 while(rs.next()){
                     ps2 = con.prepareStatement("SELECT Name,Surname FROM usertbl WHERE UserID = ?");
@@ -723,9 +788,13 @@ public class DAO implements DAOInterface{
                     rs2 = ps2.executeQuery();
                     while(rs2.next()){
                         sender.setName(rs2.getString("Name"));
-                        sender.setSurname(rs.getString("Surname"));
+                        sender.setSurname(rs2.getString("Surname"));
+                        sender.setUserID(rs.getInt("SenderID"));
                         allRequests.add(sender);
+                        sender= new User();
                     }
+                    rs2.close();
+                    ps2.close();
                 
                 }
                 
@@ -782,6 +851,31 @@ public class DAO implements DAOInterface{
             }
         }
         return allSent;
+    }
+    
+    @Override
+    public boolean removeFriend(int userID, int friendID){
+        int rowsAffected = 0;
+        if(con!=null){
+            try {
+                ps = con.prepareStatement("DELETE FROM friendstbl WHERE (UserID = ? AND FriendID = ?) or (UserID = ? AND FriendID = ?)");
+                ps.setInt(1, userID);
+                ps.setInt(2,friendID);
+                ps.setInt(4, userID);
+                ps.setInt(3,friendID);
+                
+                rowsAffected = ps.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return rowsAffected == 1;
     }
     
  ///MESSAGES
@@ -1243,6 +1337,7 @@ public class DAO implements DAOInterface{
                    com.setUploadTime(rs.getDate("Date"));
                    
                    arr.add(com);
+                   com = new Comment();
                }
            } catch (SQLException ex) {
                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);

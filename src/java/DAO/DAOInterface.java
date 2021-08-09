@@ -14,6 +14,7 @@ public interface DAOInterface {
     User adminLogin(String email, char [] password);
     boolean restoreUser(int id);
     User getUser(int userID);
+    User getUser(String email);
     
 //GROUPS
     boolean createGroup(Group group);
@@ -33,6 +34,8 @@ public interface DAOInterface {
     boolean denyFriendRequest(int senderID,int recipientID);
     ArrayList<User> getReceivedRequests(int userId);
     ArrayList<User> getSentRequests(int userId);
+    boolean sendFriendRequest(int senderID, String recipientEmail);
+    boolean removeFriend(int userID,int friendID);
     
 //Messages
     boolean composeMessage(Message message);
