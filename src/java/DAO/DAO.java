@@ -398,24 +398,39 @@ public class DAO implements DAOInterface{
         int rowsAffected = 0;
        if(con!=null){
            try {
-               ps = con.prepareStatement("INSERT INTO grouptbl VALUES(?,?,?,?,curdate())");
-               ps.setInt(1, group.getGroupID());
-               ps.setString(2, group.getName());
-               ps.setInt(3, group.getOwnerID());
-               ps.setString(4, group.getDescription());
+               ps = con.prepareStatement("INSERT INTO grouptbl(groupName,ownerID,description,dateCreated) VALUES(?,?,?,curdate())");
+               ps.setString(1, group.getName());
+               ps.setInt(2, group.getOwnerID());
+               ps.setString(3, group.getDescription());
                
                rowsAffected = ps.executeUpdate();
+               
+               ps3 = con.prepareStatement("Select max(groupID) as max from grouptbl");
+               
+               rs = ps3.executeQuery();
+               
+               rs.next();
+               
+               ps2 = con.prepareStatement("INSERT INTO linkgrouptbl(groupID,userID) value(?,?)");
+               
+               ps2.setInt(1, rs.getInt("max"));
+               ps2.setInt(2, group.getOwnerID());
+               
+               ps2.execute();
            } catch (SQLException ex) {
                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
            }finally{
                try {
                    ps.close();
+                   rs.close();
+                   ps2.close();
+                   ps3.close();
                } catch (SQLException ex) {
                    Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
                }
            }
        }
-       return rowsAffected == 5;
+       return rowsAffected == 1;
     }
 
     @Override
@@ -588,6 +603,33 @@ public class DAO implements DAOInterface{
             }
         }
         return group;
+    }
+    
+    @Override
+    public ArrayList<Group> getGroups(int userID) {
+        ArrayList<Group> groups = new ArrayList<>();
+        if(con!=null){
+            try {
+                ps2 = con.prepareStatement("SELECT groupID "+
+                                          "FROM linkgrouptbl WHERE userID = ?");
+                ps2.setInt(1, userID);
+                rs2 = ps2.executeQuery();
+                
+                while(rs2.next()){
+                    groups.add(getGroup(rs2.getInt("groupID")));
+                }
+            } catch (SQLException ex) {
+                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    ps2.close();
+                    rs2.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return groups;
     }
     
   //FRIENDS
@@ -1172,6 +1214,33 @@ public class DAO implements DAOInterface{
             }finally{
                 try {
                     ps.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return rowsAffected == 1;
+    }
+    
+    @Override
+    public boolean readPost(int postID, int userID){
+        int rowsAffected = 0;
+        if(con!=null){
+            try {
+                ps = con.prepareStatement("UPDATE posttbl SET Read ='Y' WHERE PostID = ?");
+                ps.setInt(1,postID);
+                
+                ps2 = con.prepareStatement("INSERT INTO readposttbl(PostID,UserID,Date) VALUES(?,?,curdate())");
+                ps2.setInt(1, postID);
+                ps2.setInt(2,userID);
+                
+                rowsAffected = ps.executeUpdate() + ps2.executeUpdate();
+            } catch (SQLException ex) {
+                Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    ps.close();
+                    ps2.close();
                 } catch (SQLException ex) {
                     Logger.getLogger(DAO.class.getName()).log(Level.SEVERE, null, ex);
                 }

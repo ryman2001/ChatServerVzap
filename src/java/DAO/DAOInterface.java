@@ -25,6 +25,7 @@ public interface DAOInterface {
     boolean denyGroupInvite(int groupId, int recipientId);
     boolean removeFromGroup(int groupId,int userId);
     Group getGroup(int groupId);
+    ArrayList<Group> getGroups(int userID);
     
 //FRIENDS
     ArrayList<User> getFriends(int id);
@@ -52,6 +53,7 @@ public interface DAOInterface {
     boolean updatePost(Post post);
     boolean deletePost(int postID);
     boolean readPost(int postID);
+    boolean readPost(int postID,int userID);
     Post getPost(int postID);
     ArrayList<Post> getAllPosts();
     
