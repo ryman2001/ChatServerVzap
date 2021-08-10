@@ -1,4 +1,5 @@
 
+<%@page import="models.Group"%>
 <%@page import="models.Comment"%>
 <%@page import="java.text.SimpleDateFormat"%>
 <%@page import="models.Post"%>
@@ -43,16 +44,15 @@
                         <li class="nav-item">
                             <a class="nav-link" href="#">Inbox</a>
                         </li>
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">Code Cloud</a>
-                        </li>
                         <li class="nav-item dropdown">
                             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                                 Groups
                             </a>
+                            <%ArrayList<Group> groups = dao.getGroups(user.getUserID());%>
                             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                <li><a class="dropdown-item" href="#">Group1</a></li>
-                                <li><a class="dropdown-item" href="#">Group2</a></li>
+                                <%for(int i = 0; i<groups.size();i++){%>
+                                    <li><a class="dropdown-item" href="#"><%=groups.get(i).getName()%></a></li>
+                                <%}%>
                                 <li><hr class="dropdown-divider"></li>
                                 <li><a class="dropdown-item" data-bs-toggle="modal" href="" data-bs-target="#CreateGroup">Create New Group</a></li>
                             </ul>
@@ -84,7 +84,7 @@
                         <p class="post-heading"><%=post.get(0).getTitle()%><%=post.size()%></p>
                         <p class="post-author"><%=dao.getUser(post.get(0).getOwnerID()).getName()%> <%=dao.getUser(post.get(0).getOwnerID()).getSurname()%></p>
                         <div class="container text-center" >
-                            <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore0">Learn More</a>
+                            <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore0" onclick="<%dao.readPost(post.get(0).getPostID(), user.getUserID());%>">Learn More</a>
                         </div>
                     </div>
                     <%if(post.size()!=0){%>
@@ -94,7 +94,7 @@
                             <p class="post-heading"><%=post.get(j).getTitle()%><%=post.size()%></p>
                             <p class="post-author"><%=dao.getUser(post.get(j).getOwnerID()).getName()%> <%=dao.getUser(post.get(j).getOwnerID()).getSurname()%></p>
                             <div class="container text-center" >
-                                <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore<%=j%>">Learn More</a>
+                                <a class="post-description"  data-bs-toggle="modal" data-bs-target="#PostLearnMore<%=j%>" onclick="<%dao.readPost(post.get(j).getPostID(), user.getUserID());%>">Learn More</a>
                             </div>
                         </div>
                         <%}%>
@@ -223,13 +223,16 @@
                         <h5 class="modal-title oswald" id="CreateGroupLabel">Create New Group:</h5>
                         <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                     </div>
-                    <div class="modal-body">
-                        <input class="form-control" type="text" placeholder="Enter Group Name" name="groupName" required>
-                        <input class="form-control" type="text" placeholder="Enter Group Description" name="groupDes" required>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-outline-dark">Confirm New Group</button>
-                    </div>
+                    <form action="MessageServlet" method="POST">
+                        <div class="modal-body">
+                            <input class="form-control" type="text" placeholder="Enter Group Name" name="groupName" required>
+                            <input class="form-control" type="text" placeholder="Enter Group Description" name="groupDes" required>
+                            <input type="hidden" name ="userID" value="<%=user.getUserID()%>">
+                        </div>
+                        <div class="modal-footer">
+                            <button type="submit" name="action" value="createGroup" class="btn btn-outline-dark">Confirm New Group</button>
+                        </div>
+                    </form>
                 </div>
             </div>
         </div>  
@@ -367,7 +370,6 @@
                                             <div class="person-name"><%=dao.getUser(comments.get(i).getOwnerID()).getName()%> <%=dao.getUser(comments.get(i).getOwnerID()).getSurname()%></div>
                                             <div class="chat-message overflow-visible"><%=comments.get(i).getComment()%></div>
                                             <div class="message-date-time"><%=format.format(comments.get(i).getUploadTime())%></div>
-                                            <button class="btn btn-outline-dark flag-btn">Flag Comment</button>
                                         </div>
                                     <%}else{%>
                                         <!-- YOUR COMMENT -->

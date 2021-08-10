@@ -21,12 +21,11 @@
                 <input class="form-control set-width" type="text" placeholder="Enter your Name" name="name" required>
                 <input class="form-control set-width" type="text" placeholder="Enter your Surname" name="surname" required>
                 <input class="form-control set-width" type="email" placeholder="Enter your Email" name="email" required>
-                <input class="form-control set-width" type="text" placeholder="Enter your ID Number" name="userID" required>
+                <input class="form-control set-width" type="number" placeholder="Enter your ID Number" name="userID" required>
                 <input class="form-control set-width" type="password" placeholder="Enter a Password" name="password" required>
-                <input class="form-control set-width" type="password" placeholder="Confirm Password" name="passwordConfirm" required>
                 <input class="form-control set-width" type="text" placeholder="Enter your Course ID (Optional)" name="courseID">
-                <input class="form-control set-width" type="text" placeholder="Enter your Cell Phone Number(Optional)" name="cellNum">
-                <input class="form-control set-width" type="submit" value="registrationRequestCreation" name="action">Register<input>
+                <input class="form-control set-width" type="number" placeholder="Enter your Cell Phone Number(Optional)" name="cellNum">
+                <button class="form-control set-width" type="submit" value="registrationRequestCreation" name="action">Register<button>
             </div>
         </form>
         <p class="text-center">Already have an Account?</p>

@@ -58,10 +58,7 @@
             <label for="password-22e3" class="u-custom-font u-font-oswald u-form-control-hidden u-label u-label-2"></label>
             <input type="password" placeholder="Password" id="password-22e3" name="password" class="u-border-1 u-border-white u-custom-font u-font-oswald u-input u-input-rectangle u-radius-50 u-text-grey-80 u-white" required="">
           </div>
-          <div class="u-form-checkbox u-form-group">
-            <input type="checkbox" id="checkbox-22e3" name="remember" value="On">
-            <label for="checkbox-22e3" class="u-custom-font u-font-oswald u-label u-label-3">Remember me</label>
-          </div>
+
           <div class="u-align-left u-form-group u-form-submit">
             <a href="#" class="u-border-none u-btn u-btn-round u-btn-submit u-button-style u-custom-font u-font-oswald u-grey-80 u-hover-grey-50 u-radius-50 u-text-body-alt-color u-btn-2">Login</a>
             <input name="action" type="submit" value="login" class="u-form-control-hidden">
