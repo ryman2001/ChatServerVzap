@@ -815,6 +815,37 @@ public class DAO implements DAOInterface{
     }
     
     @Override
+    public boolean addCourseGroupToFriendsList(int userId,String courseNumber){
+        int rowsAffected = 0;
+        if(con!=null){
+            try {
+                ps = con.prepareStatement("SELECT UserID FROM usertbl WHERE CourseNumber = ?");
+                ps.setString(1, courseNumber);
+                rs = ps.executeQuery();
+                while(rs.next()){
+                  ps2 = con.prepareStatement("INSERT INTO friendstbl(UserID,FriendID) VALUES(?,?)");
+                  ps2.setInt(1, userId);
+                  ps2.setInt(2,rs.getInt("UserID"));
+                  
+                  rowsAffected = ps.executeUpdate();
+                }
+                
+            } catch (SQLException ex) {
+                Logger.getLogger(FriendsDAO.class.getName()).log(Level.SEVERE, null, ex);
+            }finally{
+                try {
+                    ps.close();
+                    ps2.close();
+                    rs.close();
+                } catch (SQLException ex) {
+                    Logger.getLogger(FriendsDAO.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
+        }
+        return rowsAffected ==1;
+    }
+    
+    @Override
     public ArrayList<User> getReceivedRequests(int userId){
         ArrayList<User> allRequests = new ArrayList();
         User sender = new User();
