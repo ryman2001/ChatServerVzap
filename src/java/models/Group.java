@@ -38,14 +38,13 @@ public class Group {
         this.Description = description;
     }
 
-    public Group(String name, int groupID, String Description) {
+    public Group(String name, int ownerID, String Description) {
         this.name = name;
-        this.groupID = groupID;
+        this.ownerID = ownerID;
         this.Description = Description;
     }
+   
     
-    
-
     public String getDescription() {
         return Description;
     }
