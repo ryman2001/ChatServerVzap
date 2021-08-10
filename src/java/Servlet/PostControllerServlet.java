@@ -33,8 +33,6 @@ public class PostControllerServlet extends HttpServlet {
             default:
                 break;  
         }
-    
-       
     }
 
   
