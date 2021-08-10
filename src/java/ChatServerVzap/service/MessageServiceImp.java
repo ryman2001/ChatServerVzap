@@ -33,11 +33,11 @@ public class MessageServiceImp implements MessageServiceInterface
         HttpSession session = request.getSession();
             if(dao.composeMessage(message))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -55,15 +55,15 @@ public class MessageServiceImp implements MessageServiceInterface
         {
             if(dao.deleteMessage(Integer.parseInt(request.getParameter("messageID"))))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         }else
         {
-            session.setAttribute("Successful", "failed");
+            request.setAttribute("Successful", "failed");
         }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -77,7 +77,7 @@ public class MessageServiceImp implements MessageServiceInterface
     @Override
     public void findMessage(HttpServletRequest request, HttpServletResponse response) {
         HttpSession session = request.getSession();
-        session.setAttribute("message",dao.getMessage(Integer.parseInt(request.getParameter("messageID"))));
+        request.setAttribute("message",dao.getMessage(Integer.parseInt(request.getParameter("messageID"))));
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
         } catch (ServletException ex) {
@@ -94,15 +94,15 @@ public class MessageServiceImp implements MessageServiceInterface
         {
             if(dao.flagMessage(Integer.parseInt(request.getParameter("messageID")),Integer.parseInt(request.getParameter("userID")),request.getParameter("reason")))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         }else
         {
-            session.setAttribute("Successful", "failed");
+            request.setAttribute("Successful", "failed");
         }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -115,22 +115,17 @@ public class MessageServiceImp implements MessageServiceInterface
 
     @Override
     public void createGroup(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        SimpleDateFormat format = new SimpleDateFormat("yyy-MM-dd");
-        try {
-            if(dao.createGroup(new Group(request.getParameter("name"),format.parse(request.getParameter("date")),Integer.parseInt(request.getParameter("userID")),request.getParameter("description"))))
-            {
-                session.setAttribute("Successful", "Successful");
-            }
-            else
-            {
-                session.setAttribute("Successful", "failed");
-            }
-        } catch (ParseException ex) {
-            Logger.getLogger(MessageServiceImp.class.getName()).log(Level.SEVERE, null, ex);
+        if(dao.createGroup(new Group(request.getParameter("groupName"),Integer.parseInt(request.getParameter("userID")),request.getParameter("groupDes"))))
+        {
+            request.setAttribute("Successful", "Successful");
         }
+        else
+        {
+            request.setAttribute("Successful", "failed");
+        }
+        request.setAttribute("user", dao.getUser(Integer.parseInt(request.getParameter("userID"))));
         try {
-            request.getRequestDispatcher("homepage.jsp").forward(request, response);
+            request.getRequestDispatcher("HomePage.jsp").forward(request, response);
         } catch (ServletException ex) {
             Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
         } catch (IOException ex) {
@@ -141,20 +136,19 @@ public class MessageServiceImp implements MessageServiceInterface
 
     @Override
     public void deleteGroup(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
         if(dao.getGroup(Integer.parseInt(request.getParameter("groupID"))).getDescription()!=null)
         {
             if(dao.deleteGroup(Integer.parseInt(request.getParameter("groupID"))))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         }else
         {
-            session.setAttribute("Successful", "failed");
+            request.setAttribute("Successful", "failed");
         }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -168,20 +162,19 @@ public class MessageServiceImp implements MessageServiceInterface
     @Override
     public void updateGroup(HttpServletRequest request, HttpServletResponse response) {
         Group group = new Group(request.getParameter("name"),Integer.parseInt(request.getParameter("groupID")),request.getParameter("description"));
-        HttpSession session = request.getSession();
         if(dao.getGroup(Integer.parseInt(request.getParameter("groupID"))).getDescription()!= null)
         {
             if(dao.updateGroup(group))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         }else
         {
-            session.setAttribute("Successful", "failed");
+            request.setAttribute("Successful", "failed");
         }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -194,20 +187,19 @@ public class MessageServiceImp implements MessageServiceInterface
 
     @Override
     public void inviteToGroup(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
         if(dao.getGroup(Integer.parseInt(request.getParameter("groupID"))).getDescription()!= null)
         {
             if(dao.inviteToGroup(Integer.parseInt(request.getParameter("groupID")),Integer.parseInt(request.getParameter("userID")),Integer.parseInt(request.getParameter("receiverID"))))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         }else
         {
-            session.setAttribute("Successful", "failed");
+            request.setAttribute("Successful", "failed");
         }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -220,20 +212,19 @@ public class MessageServiceImp implements MessageServiceInterface
 
     @Override
     public void removeFromGroup(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
         if(dao.getGroup(Integer.parseInt(request.getParameter("groupID"))).getDescription()!= null)
         {
             if(dao.removeFromGroup(Integer.parseInt(request.getParameter("groupID")),Integer.parseInt(request.getParameter("userID"))))
             {
-                session.setAttribute("Successful", "Successful");
+                request.setAttribute("Successful", "Successful");
             }
             else
             {
-                session.setAttribute("Successful", "failed");
+                request.setAttribute("Successful", "failed");
             }
         }else
         {
-            session.setAttribute("Successful", "failed");
+            request.setAttribute("Successful", "failed");
         }
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
@@ -247,8 +238,7 @@ public class MessageServiceImp implements MessageServiceInterface
 
     @Override
     public void getGroup(HttpServletRequest request, HttpServletResponse response) {
-        HttpSession session = request.getSession();
-        session.setAttribute("group", dao.getGroup(Integer.parseInt(request.getParameter("groupID"))));
+        request.setAttribute("group", dao.getGroup(Integer.parseInt(request.getParameter("groupID"))));
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
         } catch (ServletException ex) {
@@ -261,8 +251,7 @@ public class MessageServiceImp implements MessageServiceInterface
     @Override
     public void unreadMessages(HttpServletRequest request, HttpServletResponse response) {
         int unreadNumber = dao.showUnread(Integer.parseInt(request.getParameter("userID")),Integer.parseInt(request.getParameter("otherID")));
-        HttpSession session = request.getSession();
-        session.setAttribute("unread", unreadNumber);
+        request.setAttribute("unread", unreadNumber);
         try {
             request.getRequestDispatcher("homepage.jsp").forward(request, response);
         } catch (ServletException ex) {
@@ -270,7 +259,5 @@ public class MessageServiceImp implements MessageServiceInterface
         } catch (IOException ex) {
             Logger.getLogger(UserServiceImp.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }
-    
-    
+    }   
 }
