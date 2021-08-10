@@ -33,6 +33,7 @@ public interface DAOInterface {
     boolean sendFriendRequest(int senderID,int recipientID);
     boolean acceptFriendRequest(int senderID,int recipientID);
     boolean denyFriendRequest(int senderID,int recipientID);
+    boolean addCourseGroupToFriendsList(int userID,String courseNumber);
     ArrayList<User> getReceivedRequests(int userId);
     ArrayList<User> getSentRequests(int userId);
     boolean sendFriendRequest(int senderID, String recipientEmail);
